@@ -20,5 +20,8 @@ THEN the saved events persist
 
 # Deployment
 
+https://jpage96.github.io/work-day-scheduler/
+
 # Screenshot
 
+![screentshot](./assets/images/mockup.png "screenshot")
