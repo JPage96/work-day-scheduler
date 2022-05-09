@@ -1,54 +1,67 @@
+// Add current date to class currentDay
+$("#currentDay").text(moment().format("dddd, MMMM Do YYYY"));
+$("#currentTime").text(moment().format("h:mm:ss a"));
 
- // WHEN I refresh the page 
- // THEN the saved events persist
- $("#7am .description").val(localStorage.getItem("7am"));
- $("#8am .description").val(localStorage.getItem("8am"));
- $("#9am .description").val(localStorage.getItem("9am"));
- $("#10am .description").val(localStorage.getItem("10am"));
- $("#11am .description").val(localStorage.getItem("11am"));
- $("#12pm .description").val(localStorage.getItem("12pm"));
- $("#1pm .description").val(localStorage.getItem("1pm"));
- $("#2pm .description").val(localStorage.getItem("2pm"));
- $("#3pm .description").val(localStorage.getItem("3pm"));
- $("#4pm .description").val(localStorage.getItem("4pm"));
- $("#5pm .description").val(localStorage.getItem("5pm"));
+//Color-code time blocks based on time to current time: past, present or future. 
 
-$(document).ready(function() {
-    // WHEN I open the planner THEN the current day is displayed at the top of the calendar
-    var timeUpdate = function() {
-        $("#currentDate").text(moment().format("dddd, MMMM Do h:mm:ss a"));
-        $("#currentTime").text(moment().format("h:mm:ss a"));
-    };
-    timeUpdate();
-    setInterval(timeUpdate, 1000);
-    // WHEN I view the time blocks for that day 
-    // THEN each time block is color-coded to indicate whether it is in the past, present, or future.
-    var colorCoder = function() {
-        var presentTime = moment().hours();
+function timeUpdate() {
+    //check current 
+    var currentHour = moment().hour();
+     
 
-        $(".time-block").each(function() {
-        var timeBlock = parseInt($(this).attr("id")[1]);
-  
-        if (timeBlock < presentTime) {
-          $(this).addClass("past");
-        } 
-        else if (timeBlock === presentTime) {
-          $(this).addClass("present");
-        } 
-        else {
-          $(this).addClass("future");
+    //pull time block
+    $(".time-block").each(function () {
+        var blockHour = parseInt($(this).attr("id").split("hour")[1]);
+
+        // loop - determin past, present, or future
+
+        //check if hour is past
+        if (blockHour < currentHour) {
+            $(this).addClass("past");
+            $(this).removeClass("present");
+            $(this).removeClass("future");
         }
-        console.log(timeBlock);
-      });   
-    }
-    colorCoder();
+        //check if hour is present 
+        else if (blockHour === currentHour) {
+            $(this).removeClass("past");
+            $(this).addClass("present");
+            $(this).removeClass("future");
+        }
+        //check if hour is future
+        else {
+            $(this).removeClass("past");
+            $(this).removeClass("present");
+            $(this).addClass("future");
+        }
+    })
+};
 
-    // WHEN I click the save button for that time block 
-    // THEN the text for that event is saved in local storage
-    $(".saveBtn").on("click", function() {
-        var taskEntryTime = $(this).parent().attr("id");
-        var taskEntryText = $(this).siblings(".description").val();
-        localStorage.setItem(taskEntryTime, taskEntryText);
-        console.log(taskEntryTime, taskEntryText);
-    });
+timeUpdate();
+
+//Save text to local storage when save is selected
+
+$(".saveBtn").on("click", function () {
+    var descr = $(this).siblings(".description").val();
+    var hour = $(this).siblings(".hour").text();
+
+    localStorage.setItem(hour, descr);
 })
+
+$(".time-block").each(function () {
+    var savedhourNode = $(this).children(".hour");
+    var savedHour = savedhourNode[0].innerHTML;
+    console.log('savedHour: ', savedHour);
+    var savedVal = localStorage.getItem(savedHour);
+    
+    console.log(savedVal)
+
+    if (savedVal !== null) {
+        console.log('IT RAN')
+        $(this).children(".description").text(savedVal);
+    }
+
+})
+
+
+
+
