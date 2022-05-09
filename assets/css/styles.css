@@ -6,8 +6,6 @@ body {
   
   textarea{
     background: transparent;
-    background-color: gray;
-    width: 80%;
     border: none;
     resize: none;
     color: #000000;
@@ -35,14 +33,14 @@ body {
   .row {
     white-space: pre-wrap;
     height: 80px;
-    border-top: 1px solid white;;
+    border-top: 1px solid white;
+    justify-content: center;
   }
   
   .hour {
     background-color: #ffffff;
     color: #000000;
     border-top: 1px dashed #000000;
-    width: 10%;
   }
   
   .past {
@@ -66,14 +64,9 @@ body {
     border-bottom-right-radius: 15px;
     background-color: #06AED5;
     color: white;
-    width: 10%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
   
-  .saveBtn:hover {
+  .saveBtn i:hover {
     font-size: 20px;
-    background-color: royalblue;
     transition: all .3s ease-in-out;
   }
